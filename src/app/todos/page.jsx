@@ -5,7 +5,7 @@ import { useTodos } from '@/contexts/TodosContext';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import TodoFilters from '@/components/todos/TodoFilters';
 import TodoItem from '@/components/todos/TodoItem';
-import TodoForm from '@/components/todos/TodoForm';
+import SimpleTodoForm from '@/components/todos/SimpleTodoForm';
 import Button from '@/components/ui/Button';
 import Loading from '@/components/ui/Loading';
 
@@ -20,6 +20,9 @@ const TodosPage = () => {
     clearError,
     filters 
   } = useTodos();
+
+  // Debug logging
+  console.log('showCreateModal state:', showCreateModal);
 
   // Fetch todos on mount and when filters change
   useEffect(() => {
@@ -54,7 +57,11 @@ const TodosPage = () => {
               </div>
               
               <div className="mt-4 sm:mt-0">
-                <Button onClick={() => setShowCreateModal(true)}>
+                <Button onClick={() => {
+                  console.log('Header New Todo button clicked!');
+                  setShowCreateModal(true);
+                  console.log('showCreateModal set to true from header');
+                }}>
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                   </svg>
@@ -102,7 +109,11 @@ const TodosPage = () => {
                 Get started by creating your first todo.
               </p>
               <div className="mt-6">
-                <Button onClick={() => setShowCreateModal(true)}>
+                <Button onClick={() => {
+                  console.log('Create Todo button clicked!');
+                  setShowCreateModal(true);
+                  console.log('showCreateModal set to true');
+                }}>
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                   </svg>
@@ -152,7 +163,7 @@ const TodosPage = () => {
           )}
 
           {/* Create Todo Modal */}
-          <TodoForm
+          <SimpleTodoForm
             isOpen={showCreateModal}
             onClose={() => setShowCreateModal(false)}
           />

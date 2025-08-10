@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Password is required'],
     minLength: [6, 'Password must be at least 6 characters long']
+    // Temporarily removing select: false to debug
   },
   profileImage: {
     type: String,
@@ -51,6 +52,16 @@ userSchema.pre('save', async function(next) {
 
 // Compare password method
 userSchema.methods.comparePassword = async function(candidatePassword) {
+  console.log('Comparing passwords - candidate exists:', !!candidatePassword);
+  console.log('Comparing passwords - stored exists:', !!this.password);
+  
+  if (!candidatePassword || !this.password) {
+    console.error('Missing password data:', { 
+      candidatePassword: !!candidatePassword, 
+      storedPassword: !!this.password 
+    });
+    return false; // Return false instead of throwing error
+  }
   return await bcrypt.compare(candidatePassword, this.password);
 };
 

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTodos } from '@/contexts/TodosContext';
 import { formatDate, isOverdue, getPriorityColor } from '@/utils/helpers';
 import Button from '@/components/ui/Button';
-import TodoForm from './TodoForm';
+import SimpleTodoForm from './SimpleTodoForm';
 
 const TodoItem = ({ todo }) => {
   const [showEditModal, setShowEditModal] = useState(false);
@@ -125,7 +125,7 @@ const TodoItem = ({ todo }) => {
         </div>
       </div>
 
-      <TodoForm
+      <SimpleTodoForm
         isOpen={showEditModal}
         onClose={() => setShowEditModal(false)}
         todo={todo}

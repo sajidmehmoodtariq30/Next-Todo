@@ -27,6 +27,12 @@ export async function POST(request) {
 
     // Find user
     const user = await User.findOne({ email });
+    
+    // Debug logging
+    console.log('User found:', !!user);
+    console.log('User has password field:', !!user?.password);
+    console.log('Password field value:', user?.password ? 'exists' : 'missing');
+    
     if (!user) {
       return NextResponse.json(
         { error: 'Invalid credentials' },
@@ -35,7 +41,17 @@ export async function POST(request) {
     }
 
     // Check password
-    const isPasswordValid = await user.comparePassword(password);
+    let isPasswordValid;
+    try {
+      isPasswordValid = await user.comparePassword(password);
+    } catch (compareError) {
+      console.error('Password comparison error:', compareError);
+      return NextResponse.json(
+        { error: 'Authentication error' },
+        { status: 500 }
+      );
+    }
+    
     if (!isPasswordValid) {
       return NextResponse.json(
         { error: 'Invalid credentials' },

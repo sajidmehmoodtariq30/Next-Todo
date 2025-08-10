@@ -144,6 +144,7 @@ export function TodosProvider({ children }) {
   // Create new todo
   const createTodo = async (todoData) => {
     try {
+      console.log('Creating todo with data:', todoData);
       dispatch({ type: TODOS_ACTIONS.CLEAR_ERROR });
 
       const response = await fetch('/api/todos', {
@@ -155,7 +156,9 @@ export function TodosProvider({ children }) {
         body: JSON.stringify(todoData),
       });
 
+      console.log('Create todo response status:', response.status);
       const data = await response.json();
+      console.log('Create todo response data:', data);
 
       if (response.ok) {
         dispatch({ type: TODOS_ACTIONS.ADD_TODO, payload: data.todo });
@@ -165,6 +168,7 @@ export function TodosProvider({ children }) {
         return { success: false, error: data.error };
       }
     } catch (error) {
+      console.error('Create todo error:', error);
       const errorMessage = 'Failed to create todo';
       dispatch({ type: TODOS_ACTIONS.SET_ERROR, payload: errorMessage });
       return { success: false, error: errorMessage };
